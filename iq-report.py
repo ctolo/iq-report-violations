@@ -44,9 +44,10 @@ async def main():
 
     for component in raw["components"]:
         issues = {}
-        for issue in component["securityData"]["securityIssues"]:
-            issues.update({issue["reference"]:{"severity":issue["severity"],"status":issue["status"]}})
-        raw.update({component["hash"]: issues })
+        if component["securityData"] is not None and component["securityData"]["securityIssues"] is not None:
+            for issue in component["securityData"]["securityIssues"]:
+                issues.update({issue["reference"]:{"severity":issue["severity"],"status":issue["status"]}})
+            raw.update({component["hash"]: issues })
 
     for component in report['components']:
         clean_dict(component, ["componentIdentifier","pathnames"])
